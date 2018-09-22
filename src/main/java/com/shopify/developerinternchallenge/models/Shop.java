@@ -1,4 +1,4 @@
-package com.shopify.demo.developerinternchallenge.models;
+package com.shopify.developerinternchallenge.models;
 
 import java.util.Map;
 
