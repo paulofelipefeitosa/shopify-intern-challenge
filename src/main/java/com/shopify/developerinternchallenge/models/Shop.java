@@ -4,8 +4,8 @@ import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Shop {
 	@Id
 	@NotBlank
+	@GeneratedValue
 	String id;
 
 	@NotBlank
@@ -23,9 +24,9 @@ public class Shop {
 
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn
 	Stock stock;
 	
+	@NotNull
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyColumn(name = Order.ID_COLUMN_NAME)
 	Map<String, Order> orders;
