@@ -1,2 +1,3 @@
-Problemas: LineItems com mais de um mesmo produto
-        :  Concorrencia na compra
+Problems: 
+    1. More than one LineItems with the same product can generate InsufficientProductsException.
+    2. More than one thread adding an Order in the same time related to the same shop and product.

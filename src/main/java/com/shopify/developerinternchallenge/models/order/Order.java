@@ -82,6 +82,10 @@ public class Order {
 		}
 	}
 
+	public Double getValue() {
+		return value;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", lineItems=" + lineItems + "]";
