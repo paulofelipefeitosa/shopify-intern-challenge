@@ -25,4 +25,18 @@ public class Order {
 	@NotNull
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	List<LineItems> lineItems;
+
+	public String getId() {
+		return id;
+	}
+
+	public List<LineItems> getLineItems() {
+		return lineItems;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + "]";
+	}
+
 }

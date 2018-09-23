@@ -50,4 +50,9 @@ public class Shop {
 	public Map<String, Order> getOrders() {
 		return orders;
 	}
+
+	@Override
+	public String toString() {
+		return "Shop [id=" + id + ", name=" + name + "]";
+	}
 }

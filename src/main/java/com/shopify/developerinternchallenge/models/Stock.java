@@ -18,4 +18,22 @@ public class Stock {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKeyColumn(name = Product.ID_COLUMN_NAME)
 	Map<String, Product> products;
+
+	public String getId() {
+		return id;
+	}
+
+	public Product getProductsById(String productId) {
+		return this.products.get(productId);
+	}
+	
+	public Map<String, Product> getProducts() {
+		return products;
+	}
+
+	@Override
+	public String toString() {
+		return "Stock [id=" + id + "]";
+	}
+	
 }
