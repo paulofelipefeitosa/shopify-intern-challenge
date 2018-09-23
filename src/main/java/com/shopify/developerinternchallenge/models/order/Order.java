@@ -20,7 +20,7 @@ import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 public class Order {
 	public static final String ID_COLUMN_NAME = "orderId";
 	public static final String TABLE_NAME = "orders_table";
-	
+
 	@Id
 	@Column(name = ID_COLUMN_NAME)
 	@GeneratedValue(generator = "uuid")
@@ -28,13 +28,13 @@ public class Order {
 	String id;
 
 	@NotNull
-	@OneToMany(orphanRemoval = true)
+	@OneToMany
 	List<LineItem> lineItems;
-	
+
 	public Order() {
 		this.lineItems = new ArrayList<>();
 	}
-	
+
 	public void addLineItem(LineItem lineItem) {
 		this.lineItems.add(lineItem);
 	}
@@ -43,8 +43,28 @@ public class Order {
 		return id;
 	}
 
+	public LineItem getLineItemWithId(String lineItemId) {
+		for (LineItem lineItem : this.lineItems) {
+			if (lineItem.getId() == lineItemId) {
+				return lineItem;
+			}
+		}
+		return null;
+	}
+
+	public void deleteLineItemWithId(String lineItemId) {
+		LineItem lineItem = getLineItemWithId(lineItemId);
+		if (lineItem != null) {
+			this.lineItems.remove(lineItem);
+		}
+	}
+
 	public List<LineItem> getLineItems() {
 		return lineItems;
+	}
+
+	public void setLineItems(List<LineItem> lineItems) {
+		this.lineItems = lineItems;
 	}
 
 	@Override

@@ -28,12 +28,16 @@ public class Stock {
 		this.products = new HashMap<>();
 	}
 	
+	public String getId() {
+		return id;
+	}
+	
 	public void addProduct(Product product) {
 		this.products.put(product.getId(), product);
 	}
-
-	public String getId() {
-		return id;
+	
+	public void deleteProduct(Product product) {
+		this.products.remove(product.getId());
 	}
 
 	public Product getProductsById(String productId) {
@@ -42,6 +46,10 @@ public class Stock {
 	
 	public Map<String, Product> getProducts() {
 		return products;
+	}
+	
+	public void setProducts(Map<String, Product> products) {
+		this.products = products;
 	}
 
 	@Override
