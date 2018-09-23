@@ -1,0 +1,2 @@
+Problemas: LineItems com mais de um mesmo produto
+        :  Concorrencia na compra
