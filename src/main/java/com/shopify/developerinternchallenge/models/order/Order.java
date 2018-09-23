@@ -1,4 +1,4 @@
-package com.shopify.developerinternchallenge.models;
+package com.shopify.developerinternchallenge.models.order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 
 @Entity
 @Table(name = Order.TABLE_NAME)

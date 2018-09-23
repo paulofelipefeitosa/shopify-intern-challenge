@@ -6,8 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shopify.developerinternchallenge.models.LineItem;
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
+import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.repositories.LineItemRepository;
 
 @Service

@@ -1,10 +1,9 @@
-package com.shopify.developerinternchallenge.models;
+package com.shopify.developerinternchallenge.models.shop;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
@@ -12,15 +11,12 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.shopify.developerinternchallenge.models.order.Order;
+import com.shopify.developerinternchallenge.models.stock.Stock;
 
 @Entity
 public class Shop {
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	String id;
-
 	@NotBlank
 	String name;
 
@@ -32,7 +28,7 @@ public class Shop {
 	@OneToMany(orphanRemoval = true)
 	@MapKeyColumn(name = Order.ID_COLUMN_NAME)
 	Map<String, Order> orders;
-	
+
 	public Shop() {
 		this.orders = new HashMap<>();
 	}
@@ -43,16 +39,8 @@ public class Shop {
 		this.stock = stock;
 	}
 
-	public void addOrder(Order order) {
-		this.orders.put(order.getId(), order);
-	}
-
 	public PublicShop getPublicShop() {
 		return new PublicShop(this);
-	}
-
-	public String getId() {
-		return id;
 	}
 
 	public String getName() {
@@ -63,12 +51,24 @@ public class Shop {
 		return stock;
 	}
 
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
+	public void addOrder(Order order) {
+		this.orders.put(order.getId(), order);
+	}
+	
+	public void deleteOrder(String orderId) {
+		this.orders.remove(orderId);
+	}
+
 	public Map<String, Order> getOrders() {
 		return orders;
 	}
 
 	@Override
 	public String toString() {
-		return "Shop [id=" + id + ", name=" + name + "]";
+		return "Shop [name=" + name + "]";
 	}
 }

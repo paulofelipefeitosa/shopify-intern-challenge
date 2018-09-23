@@ -5,11 +5,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.shopify.developerinternchallenge.models.LineItem;
-import com.shopify.developerinternchallenge.models.Order;
-import com.shopify.developerinternchallenge.models.Product;
-import com.shopify.developerinternchallenge.models.Shop;
-import com.shopify.developerinternchallenge.models.Stock;
+import com.shopify.developerinternchallenge.models.lineitems.LineItem;
+import com.shopify.developerinternchallenge.models.order.Order;
+import com.shopify.developerinternchallenge.models.product.Product;
+import com.shopify.developerinternchallenge.models.shop.Shop;
+import com.shopify.developerinternchallenge.models.stock.Stock;
 import com.shopify.developerinternchallenge.services.LineItemService;
 import com.shopify.developerinternchallenge.services.OrderService;
 import com.shopify.developerinternchallenge.services.ProductService;

@@ -1,4 +1,4 @@
-package com.shopify.developerinternchallenge.models;
+package com.shopify.developerinternchallenge.models.lineitems;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.shopify.developerinternchallenge.models.product.Product;
 
 @Entity
 public class LineItem {

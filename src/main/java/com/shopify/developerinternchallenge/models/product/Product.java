@@ -1,4 +1,4 @@
-package com.shopify.developerinternchallenge.models;
+package com.shopify.developerinternchallenge.models.product;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.shopify.developerinternchallenge.models;
+package com.shopify.developerinternchallenge.models.stock;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,8 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.shopify.developerinternchallenge.models.product.Product;
 
 @Entity
 public class Stock {
