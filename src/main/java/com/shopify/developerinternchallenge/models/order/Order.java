@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -28,20 +29,24 @@ public class Order {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	String id;
 
+	@PositiveOrZero
+	Double value;
+	
 	@NotNull
 	@OneToMany(fetch = FetchType.EAGER)
 	List<LineItem> lineItems;
-
+	
 	public Order() {
 		this.lineItems = new ArrayList<>();
 	}
 
-	public void addLineItem(LineItem lineItem) {
-		this.lineItems.add(lineItem);
-	}
-
 	public String getId() {
 		return id;
+	}
+	
+	public void addLineItem(LineItem lineItem) {
+		this.lineItems.add(lineItem);
+		calculateValue();
 	}
 
 	public LineItem getLineItemWithId(String lineItemId) {
@@ -57,6 +62,7 @@ public class Order {
 		LineItem lineItem = getLineItemWithId(lineItemId);
 		if (lineItem != null) {
 			this.lineItems.remove(lineItem);
+			calculateValue();
 		}
 	}
 
@@ -66,6 +72,14 @@ public class Order {
 
 	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
+		calculateValue();
+	}
+	
+	private void calculateValue() {
+		this.value = 0.0;
+		for(LineItem lineItem : this.lineItems) {
+			this.value += lineItem.getValue();
+		}
 	}
 
 	@Override

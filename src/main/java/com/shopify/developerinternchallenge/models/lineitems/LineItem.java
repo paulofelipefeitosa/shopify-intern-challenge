@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,6 +26,9 @@ public class LineItem {
 	@Positive
 	Integer amount;
 	
+	@PositiveOrZero
+	Double value;
+	
 	public LineItem() {
 	}
 	
@@ -32,6 +36,15 @@ public class LineItem {
 		this();
 		this.product = product;
 		this.amount = amount;
+		calculateValue();
+	}
+	
+	private void calculateValue() {
+		this.value = this.product.getPrice() * this.amount;
+	}
+
+	public Double getValue() {
+		return value;
 	}
 
 	public String getId() {
@@ -48,6 +61,7 @@ public class LineItem {
 
 	public void setAmount(Integer amount) {
 		this.amount = amount;
+		calculateValue();
 	}
 
 	@Override
