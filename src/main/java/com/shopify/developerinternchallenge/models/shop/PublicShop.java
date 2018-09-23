@@ -10,4 +10,5 @@ public class PublicShop {
 	public String getName() {
 		return name;
 	}
+
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
@@ -25,7 +26,7 @@ public class Shop {
 	Stock stock;
 
 	@NotNull
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	@MapKeyColumn(name = Order.ID_COLUMN_NAME)
 	Map<String, Order> orders;
 

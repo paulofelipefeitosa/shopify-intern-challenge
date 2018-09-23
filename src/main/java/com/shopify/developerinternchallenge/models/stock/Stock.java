@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
@@ -20,7 +21,7 @@ public class Stock {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	String id;
 	
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	@MapKeyColumn(name = Product.ID_COLUMN_NAME)
 	Map<String, Product> products;
 	

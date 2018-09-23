@@ -3,6 +3,7 @@ package com.shopify.developerinternchallenge.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -17,10 +18,8 @@ import com.shopify.developerinternchallenge.repositories.StockRepository;
 
 @Service
 public class StockService {
-
 	@Autowired
 	StockRepository stockRepository;
-
 	@Autowired
 	ProductService productService;
 
@@ -29,10 +28,16 @@ public class StockService {
 	}
 
 	public Stock getStockById(String stockId) {
-		return this.stockRepository.findById(stockId).get();
+		if (stockId != null) {
+			Optional<Stock> stock = this.stockRepository.findById(stockId);
+			if (stock.isPresent()) {
+				return stock.get();
+			}
+		}
+		return null;
 	}
 
-	@Transactional
+	@Transactional(dontRollbackOn = RuntimeException.class)
 	public Stock addStock(Stock stock) {
 		if (contains(stock)) {
 			throw new ElementAlreadyExistException(stock.toString());
@@ -70,10 +75,10 @@ public class StockService {
 	}
 
 	@Transactional
-	public void deleteStockProduct(Product product, Stock stock) {
+	public Stock deleteStockProduct(Product product, Stock stock) {
 		this.productService.deleteProduct(product.getId());
 		stock.deleteProduct(product);
-		this.stockRepository.saveAndFlush(stock);
+		return this.stockRepository.saveAndFlush(stock);
 	}
 
 	public boolean contains(Stock stock) {
@@ -81,12 +86,7 @@ public class StockService {
 	}
 
 	public boolean contains(String stockId) {
-		try {
-			getStockById(stockId);
-		} catch (RuntimeException e) {
-			return false;
-		}
-		return true;
+		return getStockById(stockId) != null;
 	}
 
 }

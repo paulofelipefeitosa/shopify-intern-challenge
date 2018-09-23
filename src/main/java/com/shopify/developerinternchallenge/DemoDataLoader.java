@@ -18,7 +18,6 @@ import com.shopify.developerinternchallenge.services.StockService;
 
 @Component
 public class DemoDataLoader implements ApplicationRunner {
-
 	@Autowired
 	ShopService shopService;
 	@Autowired
@@ -32,23 +31,24 @@ public class DemoDataLoader implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		Product product = new Product("FirstProduct", "This is the first product of the Shop", 10, 1.5);
-		product = this.productService.addProduct(product);
+		Shop shop = new Shop("BoraBiexo", new Stock());
+		shop = this.shopService.addShop(shop.getPublicShop());
 		
-		Stock stock = new Stock();
-		stock.addProduct(product);
-		stock = this.stockService.addStock(stock);
+		System.out.println(shop);
+		
+		Product product = new Product("FirstProduct", "This is the first product of the Shop", 10, 1.5);
+		Stock stock = shop.getStock();
+		System.out.println(stock);
+		System.out.println(stock.getProducts());
+		product = this.stockService.addProductToStock(product.getPublicProduct(), stock);
+		System.out.println(product);
+		System.out.println(this.stockService.getStockById(stock.getId()));
 		
 		LineItem lineItem = new LineItem(product, 5);
-		lineItem = this.lineItemService.addLineItem(lineItem);
-		
 		Order order = new Order();
 		order.addLineItem(lineItem);
-		order = this.orderService.addOrder(order);
-		
-		Shop shop = new Shop("BoraBiexo", stock);
-		shop.addOrder(order);
-		shop = this.shopService.addShop(shop);
+		order = this.shopService.addOrderToShop(order, shop.getPublicShop());
+		System.out.println(order);
 	}
 
 }

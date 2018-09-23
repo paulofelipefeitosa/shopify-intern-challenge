@@ -3,6 +3,7 @@ package com.shopify.developerinternchallenge.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -27,7 +28,13 @@ public class OrderService {
 	}
 
 	public Order getOrderById(String orderId) {
-		return this.orderRepository.findById(orderId).get();
+		if (orderId != null) {
+			Optional<Order> order = this.orderRepository.findById(orderId);
+			if (order.isPresent()) {
+				return order.get();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -76,10 +83,10 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void deleteLineItemFromOrder(LineItem lineItem, Order order) {
+	public Order deleteLineItemFromOrder(LineItem lineItem, Order order) {
 		this.lineItemService.deleteLineItem(lineItem.getId());
 		order.deleteLineItemWithId(lineItem.getId());
-		this.orderRepository.saveAndFlush(order);
+		return this.orderRepository.saveAndFlush(order);
 	}
 
 	public boolean contains(Order order) {
@@ -87,11 +94,6 @@ public class OrderService {
 	}
 
 	public boolean contains(String orderId) {
-		try {
-			getOrderById(orderId);
-		} catch (RuntimeException e) {
-			return false;
-		}
-		return true;
+		return getOrderById(orderId) != null;
 	}
 }

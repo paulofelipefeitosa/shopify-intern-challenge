@@ -2,6 +2,7 @@ package com.shopify.developerinternchallenge.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -26,7 +27,13 @@ public class LineItemService {
 	}
 
 	public LineItem getLineItemById(String lineItemId) {
-		return this.lineItemRepository.findById(lineItemId).get();
+		if(lineItemId != null) {
+			Optional<LineItem> lineItem = this.lineItemRepository.findById(lineItemId);
+			if(lineItem.isPresent()) {
+				return lineItem.get();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -83,11 +90,6 @@ public class LineItemService {
 	}
 
 	public boolean contains(String lineItemId) {
-		try {
-			getLineItemById(lineItemId);
-		} catch (RuntimeException e) {
-			return false;
-		}
-		return true;
+		return getLineItemById(lineItemId) != null;
 	}
 }

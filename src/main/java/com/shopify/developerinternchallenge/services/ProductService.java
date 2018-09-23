@@ -2,6 +2,7 @@ package com.shopify.developerinternchallenge.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -23,10 +24,16 @@ public class ProductService {
 	}
 
 	public Product getProductById(String productId) {
-		return this.productRepository.findById(productId).get();
+		if (productId != null) {
+			Optional<Product> product = this.productRepository.findById(productId);
+			if (product.isPresent()) {
+				return product.get();
+			}
+		}
+		return null;
 	}
 
-	@Transactional
+	@Transactional(dontRollbackOn = RuntimeException.class)
 	public Product addProduct(PublicProduct publicProduct) {
 		Product product = new Product(publicProduct.getName(), publicProduct.getDescription(),
 				publicProduct.getAvailableAmount(), publicProduct.getPrice());
@@ -43,28 +50,28 @@ public class ProductService {
 		}
 		this.productRepository.delete(getProductById(productId));
 	}
-	
+
 	@Transactional
 	public Product editProductName(String productId, String newName) {
 		Product product = getProductById(productId);
 		product.setName(newName);
 		return this.productRepository.saveAndFlush(product);
 	}
-	
+
 	@Transactional
 	public Product editProductDescription(String productId, String newDescription) {
 		Product product = getProductById(productId);
 		product.setDescription(newDescription);
 		return this.productRepository.saveAndFlush(product);
 	}
-	
+
 	@Transactional
 	public Product editProductPrice(String productId, Double newPrice) {
 		Product product = getProductById(productId);
 		product.setPrice(newPrice);
 		return this.productRepository.saveAndFlush(product);
 	}
-	
+
 	@Transactional
 	public Product addProduct2Stock(String productId, Integer add2Stock) {
 		Product product = getProductById(productId);
@@ -77,11 +84,6 @@ public class ProductService {
 	}
 
 	public boolean contains(String productId) {
-		try {
-			getProductById(productId);
-		} catch (RuntimeException e) {
-			return false;
-		}
-		return true;
+		return getProductById(productId) != null;
 	}
 }
