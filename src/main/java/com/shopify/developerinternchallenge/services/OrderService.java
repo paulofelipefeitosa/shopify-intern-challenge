@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
-import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailable;
+import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailableException;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.order.Order;
 import com.shopify.developerinternchallenge.repositories.OrderRepository;
@@ -49,7 +49,7 @@ public class OrderService {
 		}
 		for (LineItem lineItem : order.getLineItems()) {
 			if (!this.lineItemService.thereIsEnoughProductsAvailable(lineItem)) {
-				throw new InsufficientProductsAvailable("Cannot process " + order.toString()
+				throw new InsufficientProductsAvailableException("Cannot process " + order.toString()
 						+ " there are not enough products available for " + lineItem.toString());
 			}
 		}

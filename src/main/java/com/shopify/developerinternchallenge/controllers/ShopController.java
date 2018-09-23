@@ -5,13 +5,16 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
 import com.shopify.developerinternchallenge.models.shop.PublicShop;
+import com.shopify.developerinternchallenge.models.shop.Shop;
 import com.shopify.developerinternchallenge.services.ShopService;
 
 @RestController
@@ -31,9 +34,24 @@ public class ShopController {
         //@formatter:on
     }
 	
+	@RequestMapping(value = "/{shopName}", method = RequestMethod.GET)
+	public @ResponseBody Shop getShop(@PathVariable String shopName) {
+        Shop shop = this.shopService.getShopByName(shopName);
+        if(shop == null) {
+        	throw new NotFoundException(shopName);
+        }
+        return shop;
+    }
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody PublicShop addShop(@RequestBody PublicShop shop) {
         return this.shopService.addShop(shop).getPublicShop();
+    }
+	
+	@RequestMapping(value = "/{shopName}", method = RequestMethod.DELETE)
+	public @ResponseBody Boolean deleteShop(@PathVariable String shopId) {
+        this.shopService.deleteShop(shopId);
+        return true;
     }
 	
 }

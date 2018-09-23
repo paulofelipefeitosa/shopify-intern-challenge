@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
-import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailable;
+import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailableException;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.product.Product;
 import com.shopify.developerinternchallenge.repositories.LineItemRepository;
@@ -52,7 +52,7 @@ public class LineItemService {
 			return this.lineItemRepository.save(lineItem);
 		} else {
 			Product product = this.productService.getProductById(lineItem.getProduct().getId());
-			throw new InsufficientProductsAvailable(
+			throw new InsufficientProductsAvailableException(
 					"Product [" + product.getId() + "] has just [" + product.getAvailableAmount()
 							+ "] and you are trying to get [" + lineItem.getAmount() + "] products");
 		}
@@ -75,7 +75,7 @@ public class LineItemService {
 			lineItem.setAmount(newAmount);
 			return this.lineItemRepository.saveAndFlush(lineItem);
 		} else {
-			throw new InsufficientProductsAvailable("Product [" + product.getId() + "] has just ["
+			throw new InsufficientProductsAvailableException("Product [" + product.getId() + "] has just ["
 					+ product.getAvailableAmount() + "] and you are trying to get [" + newAmount + "] products");
 		}
 	}

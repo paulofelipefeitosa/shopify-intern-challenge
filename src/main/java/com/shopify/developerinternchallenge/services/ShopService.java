@@ -1,7 +1,6 @@
 package com.shopify.developerinternchallenge.services;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
+import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
 import com.shopify.developerinternchallenge.models.order.Order;
 import com.shopify.developerinternchallenge.models.shop.PublicShop;
 import com.shopify.developerinternchallenge.models.shop.Shop;
@@ -29,7 +29,7 @@ public class ShopService {
 		return this.shopRepository.findAll();
 	}
 
-	public Shop getShopName(String shopName) {
+	public Shop getShopByName(String shopName) {
 		if (shopName != null) {
 			Optional<Shop> shop = this.shopRepository.findById(shopName);
 			if (shop.isPresent()) {
@@ -56,7 +56,7 @@ public class ShopService {
 	@Transactional
 	public Order addOrderToShop(Order order, PublicShop publicShop) {
 		order = this.orderService.addOrder(order);
-		Shop shop = getShopName(publicShop.getName());
+		Shop shop = getShopByName(publicShop.getName());
 		shop.addOrder(order);
 		this.shopRepository.saveAndFlush(shop);
 		return order;
@@ -65,9 +65,9 @@ public class ShopService {
 	@Transactional
 	public void deleteShop(String shopId) {
 		if (!contains(shopId)) {
-			throw new NoSuchElementException(shopId);
+			throw new NotFoundException(shopId);
 		}
-		Shop shop = getShopName(shopId);
+		Shop shop = getShopByName(shopId);
 		Stock stock = shop.getStock();
 		this.stockService.deleteStock(stock.getId());
 		for (Order order : shop.getOrders().values()) {
@@ -79,7 +79,7 @@ public class ShopService {
 	@Transactional
 	public Shop deleteShopOrder(Order order, PublicShop publicShop) {
 		this.orderService.deleteOrder(order.getId());
-		Shop shop = getShopName(publicShop.getName());
+		Shop shop = getShopByName(publicShop.getName());
 		shop.deleteOrder(order.getId());
 		return this.shopRepository.saveAndFlush(shop);
 	}
@@ -89,7 +89,7 @@ public class ShopService {
 	}
 
 	public boolean contains(String shopId) {
-		return getShopName(shopId) != null;
+		return getShopByName(shopId) != null;
 	}
 
 }
