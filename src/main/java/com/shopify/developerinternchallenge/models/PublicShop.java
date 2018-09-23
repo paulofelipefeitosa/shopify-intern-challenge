@@ -8,4 +8,12 @@ public class PublicShop {
 		this.id = shop.getId();
 		this.name = shop.getName();
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

@@ -1,8 +1,8 @@
 package com.shopify.developerinternchallenge.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,24 +12,40 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class Shop {
 	@Id
-	@NotBlank
-	@GeneratedValue
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	String id;
 
 	@NotBlank
 	String name;
 
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(orphanRemoval = true)
 	Stock stock;
-	
+
 	@NotNull
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(orphanRemoval = true)
 	@MapKeyColumn(name = Order.ID_COLUMN_NAME)
 	Map<String, Order> orders;
+	
+	public Shop() {
+		this.orders = new HashMap<>();
+	}
+
+	public Shop(String name, Stock stock) {
+		this();
+		this.name = name;
+		this.stock = stock;
+	}
+
+	public void addOrder(Order order) {
+		this.orders.put(order.getId(), order);
+	}
 
 	public PublicShop getPublicShop() {
 		return new PublicShop(this);

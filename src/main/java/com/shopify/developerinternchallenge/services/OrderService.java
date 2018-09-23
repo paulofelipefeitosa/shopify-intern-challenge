@@ -24,11 +24,11 @@ public class OrderService {
 		return this.orderRepository.findById(orderId).get();
 	}
 
-	public void addOrder(Order order) {
+	public Order addOrder(Order order) {
 		if (contains(order)) {
 			throw new ElementAlreadyExistException(order.toString());
 		}
-		this.orderRepository.save(order);
+		return this.orderRepository.save(order);
 	}
 
 	public void deleteOrder(String orderId) {
@@ -45,7 +45,7 @@ public class OrderService {
 	public boolean contains(String orderId) {
 		try {
 			getOrderById(orderId);
-		} catch (NoSuchElementException e) {
+		} catch (RuntimeException e) {
 			return false;
 		}
 		return true;

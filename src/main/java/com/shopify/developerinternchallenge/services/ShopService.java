@@ -24,11 +24,11 @@ public class ShopService {
 		return this.shopRepository.findById(shopId).get();
 	}
 
-	public void addShop(Shop shop) {
+	public Shop addShop(Shop shop) {
 		if (contains(shop)) {
 			throw new ElementAlreadyExistException(shop.toString());
 		}
-		this.shopRepository.save(shop);
+		return this.shopRepository.save(shop);
 	}
 
 	public void deleteShop(String shopId) {
@@ -45,7 +45,7 @@ public class ShopService {
 	public boolean contains(String shopId) {
 		try {
 			getShopById(shopId);
-		} catch (NoSuchElementException e) {
+		} catch (RuntimeException e) {
 			return false;
 		}
 		return true;

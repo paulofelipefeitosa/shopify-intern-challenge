@@ -3,9 +3,9 @@ package com.shopify.developerinternchallenge.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.shopify.developerinternchallenge.models.LineItems;
+import com.shopify.developerinternchallenge.models.LineItem;
 
 @Repository
-public interface LineItemsRepository extends JpaRepository<LineItems, String> {
+public interface LineItemRepository extends JpaRepository<LineItem, String> {
 
 }

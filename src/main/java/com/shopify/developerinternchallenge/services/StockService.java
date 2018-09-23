@@ -24,11 +24,11 @@ public class StockService {
 		return this.stockRepository.findById(stockId).get();
 	}
 
-	public void addStock(Stock stock) {
+	public Stock addStock(Stock stock) {
 		if (contains(stock)) {
 			throw new ElementAlreadyExistException(stock.toString());
 		}
-		this.stockRepository.save(stock);
+		return this.stockRepository.save(stock);
 	}
 
 	public void deleteStock(String stockId) {
@@ -45,7 +45,7 @@ public class StockService {
 	public boolean contains(String stockId) {
 		try {
 			getStockById(stockId);
-		} catch (NoSuchElementException e) {
+		} catch (RuntimeException e) {
 			return false;
 		}
 		return true;

@@ -1,23 +1,34 @@
 package com.shopify.developerinternchallenge.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Stock {
 	@Id
-	@NotBlank
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	String id;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(orphanRemoval = true)
 	@MapKeyColumn(name = Product.ID_COLUMN_NAME)
 	Map<String, Product> products;
+	
+	public Stock() {
+		this.products = new HashMap<>();
+	}
+	
+	public void addProduct(Product product) {
+		this.products.put(product.getId(), product);
+	}
 
 	public String getId() {
 		return id;
