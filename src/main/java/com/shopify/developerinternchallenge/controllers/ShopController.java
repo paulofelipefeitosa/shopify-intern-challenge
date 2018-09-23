@@ -1,5 +1,6 @@
 package com.shopify.developerinternchallenge.controllers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,14 +14,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
+import com.shopify.developerinternchallenge.models.product.Product;
 import com.shopify.developerinternchallenge.models.shop.PublicShop;
 import com.shopify.developerinternchallenge.models.shop.Shop;
 import com.shopify.developerinternchallenge.services.ShopService;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/shops")
+@RequestMapping(ShopController.ENDPOINT)
 public class ShopController {
+	public static final String ENDPOINT = "/shops";
 	
 	@Autowired
 	ShopService shopService;
@@ -36,11 +39,14 @@ public class ShopController {
 	
 	@RequestMapping(value = "/{shopName}", method = RequestMethod.GET)
 	public @ResponseBody Shop getShop(@PathVariable String shopName) {
-        Shop shop = this.shopService.getShopByName(shopName);
-        if(shop == null) {
-        	throw new NotFoundException(shopName);
-        }
+        Shop shop = getShopByName(shopName);
         return shop;
+    }
+
+	@RequestMapping(value = "/{shopName}/products", method = RequestMethod.GET)
+	public @ResponseBody Collection<Product> getShopProducts(@PathVariable String shopName) {
+        Shop shop = getShopByName(shopName);
+        return shop.getProducts().values();
     }
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -53,5 +59,13 @@ public class ShopController {
         this.shopService.deleteShop(shopId);
         return true;
     }
+	
+	private Shop getShopByName(String shopName) {
+		Shop shop = this.shopService.getShopByName(shopName);
+        if(shop == null) {
+        	throw new NotFoundException(shopName);
+        }
+		return shop;
+	}
 	
 }

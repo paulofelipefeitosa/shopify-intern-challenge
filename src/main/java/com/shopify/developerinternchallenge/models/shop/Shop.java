@@ -8,12 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.shopify.developerinternchallenge.models.order.Order;
-import com.shopify.developerinternchallenge.models.stock.Stock;
+import com.shopify.developerinternchallenge.models.product.Product;
 
 @Entity
 public class Shop {
@@ -21,9 +20,9 @@ public class Shop {
 	@NotBlank
 	String name;
 
-	@NotNull
-	@OneToOne(orphanRemoval = true)
-	Stock stock;
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+	@MapKeyColumn(name = Product.ID_COLUMN_NAME)
+	Map<String, Product> products;
 
 	@NotNull
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
@@ -32,12 +31,12 @@ public class Shop {
 
 	public Shop() {
 		this.orders = new HashMap<>();
+		this.products = new HashMap<>();
 	}
 
-	public Shop(String name, Stock stock) {
+	public Shop(String name) {
 		this();
 		this.name = name;
-		this.stock = stock;
 	}
 
 	public PublicShop getPublicShop() {
@@ -46,14 +45,6 @@ public class Shop {
 
 	public String getName() {
 		return name;
-	}
-
-	public Stock getStock() {
-		return stock;
-	}
-
-	public void setStock(Stock stock) {
-		this.stock = stock;
 	}
 
 	public void addOrder(Order order) {
@@ -66,6 +57,26 @@ public class Shop {
 
 	public Map<String, Order> getOrders() {
 		return orders;
+	}
+	
+	public void addProduct(Product product) {
+		this.products.put(product.getId(), product);
+	}
+	
+	public void deleteProduct(Product product) {
+		this.products.remove(product.getId());
+	}
+
+	public Product getProductsById(String productId) {
+		return this.products.get(productId);
+	}
+	
+	public Map<String, Product> getProducts() {
+		return products;
+	}
+	
+	public void setProducts(Map<String, Product> products) {
+		this.products = products;
 	}
 
 	@Override

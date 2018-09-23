@@ -1,5 +1,6 @@
 package com.shopify.developerinternchallenge.services;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,10 @@ import org.springframework.stereotype.Service;
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
 import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
 import com.shopify.developerinternchallenge.models.order.Order;
+import com.shopify.developerinternchallenge.models.product.Product;
+import com.shopify.developerinternchallenge.models.product.PublicProduct;
 import com.shopify.developerinternchallenge.models.shop.PublicShop;
 import com.shopify.developerinternchallenge.models.shop.Shop;
-import com.shopify.developerinternchallenge.models.stock.Stock;
 import com.shopify.developerinternchallenge.repositories.ShopRepository;
 
 @Service
@@ -21,9 +23,9 @@ public class ShopService {
 	@Autowired
 	ShopRepository shopRepository;
 	@Autowired
-	StockService stockService;
-	@Autowired
 	OrderService orderService;
+	@Autowired
+	ProductService productService;
 
 	public List<Shop> getAllShops() {
 		return this.shopRepository.findAll();
@@ -40,7 +42,7 @@ public class ShopService {
 	}
 
 	public Shop addShop(PublicShop shop) {
-		return addShop(new Shop(shop.getName(), new Stock()));
+		return addShop(new Shop(shop.getName()));
 	}
 
 	@Transactional
@@ -48,13 +50,22 @@ public class ShopService {
 		if (contains(shop)) {
 			throw new ElementAlreadyExistException(shop.toString());
 		}
-		Stock stock = this.stockService.addStock(shop.getStock());
-		shop.setStock(stock);
+		if(shop.getProducts() == null) {
+			shop.setProducts(new HashMap<>());
+		}
 		return this.shopRepository.save(shop);
+	}
+	
+	@Transactional
+	public Product addProduct2Shop(PublicProduct publicProduct, Shop shop) {
+		Product product = this.productService.addProduct(publicProduct);
+		shop.addProduct(product);
+		this.shopRepository.saveAndFlush(shop);
+		return product;
 	}
 
 	@Transactional
-	public Order addOrderToShop(Order order, PublicShop publicShop) {
+	public Order addOrder2Shop(Order order, PublicShop publicShop) {
 		order = this.orderService.addOrder(order);
 		Shop shop = getShopByName(publicShop.getName());
 		shop.addOrder(order);
@@ -68,12 +79,20 @@ public class ShopService {
 			throw new NotFoundException(shopId);
 		}
 		Shop shop = getShopByName(shopId);
-		Stock stock = shop.getStock();
-		this.stockService.deleteStock(stock.getId());
+		for (Product product : shop.getProducts().values()) {
+			this.productService.deleteProduct(product.getId());
+		}
 		for (Order order : shop.getOrders().values()) {
 			this.orderService.deleteOrder(order.getId());
 		}
 		this.shopRepository.delete(shop);
+	}
+	
+	@Transactional
+	public Shop deleteStockProduct(Product product, Shop shop) {
+		this.productService.deleteProduct(product.getId());
+		shop.deleteProduct(product);
+		return this.shopRepository.saveAndFlush(shop);
 	}
 
 	@Transactional
