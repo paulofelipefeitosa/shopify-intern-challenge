@@ -33,7 +33,7 @@ public class ProductService {
 		return null;
 	}
 
-	@Transactional(dontRollbackOn = RuntimeException.class)
+	@Transactional
 	public Product addProduct(PublicProduct publicProduct) {
 		Product product = new Product(publicProduct.getName(), publicProduct.getDescription(),
 				publicProduct.getAvailableAmount(), publicProduct.getPrice());

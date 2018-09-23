@@ -37,7 +37,7 @@ public class StockService {
 		return null;
 	}
 
-	@Transactional(dontRollbackOn = RuntimeException.class)
+	@Transactional
 	public Stock addStock(Stock stock) {
 		if (contains(stock)) {
 			throw new ElementAlreadyExistException(stock.toString());

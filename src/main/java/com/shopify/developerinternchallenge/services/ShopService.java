@@ -43,7 +43,7 @@ public class ShopService {
 		return addShop(new Shop(shop.getName(), new Stock()));
 	}
 
-	@Transactional(dontRollbackOn = { RuntimeException.class })
+	@Transactional
 	private Shop addShop(Shop shop) {
 		if (contains(shop)) {
 			throw new ElementAlreadyExistException(shop.toString());
@@ -62,7 +62,7 @@ public class ShopService {
 		return order;
 	}
 
-	@Transactional(dontRollbackOn = { NoSuchElementException.class })
+	@Transactional
 	public void deleteShop(String shopId) {
 		if (!contains(shopId)) {
 			throw new NoSuchElementException(shopId);
@@ -84,12 +84,10 @@ public class ShopService {
 		return this.shopRepository.saveAndFlush(shop);
 	}
 
-	@Transactional
 	public boolean contains(Shop shop) {
 		return contains(shop.getName());
 	}
 
-	@Transactional
 	public boolean contains(String shopId) {
 		return getShopName(shopId) != null;
 	}
