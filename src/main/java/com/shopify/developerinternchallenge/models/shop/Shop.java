@@ -22,12 +22,12 @@ public class Shop {
 
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	@MapKeyColumn(name = Product.ID_COLUMN_NAME)
-	Map<String, Product> products;
+	Map<Long, Product> products;
 
 	@NotNull
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	@MapKeyColumn(name = Order.ID_COLUMN_NAME)
-	Map<String, Order> orders;
+	Map<Long, Order> orders;
 
 	public Shop() {
 		this.orders = new HashMap<>();
@@ -51,11 +51,11 @@ public class Shop {
 		this.orders.put(order.getId(), order);
 	}
 	
-	public void deleteOrder(String orderId) {
+	public void deleteOrder(Long orderId) {
 		this.orders.remove(orderId);
 	}
 
-	public Map<String, Order> getOrders() {
+	public Map<Long, Order> getOrders() {
 		return orders;
 	}
 	
@@ -67,15 +67,15 @@ public class Shop {
 		this.products.remove(product.getId());
 	}
 
-	public Product getProductsById(String productId) {
+	public Product getProductsById(Long productId) {
 		return this.products.get(productId);
 	}
 	
-	public Map<String, Product> getProducts() {
+	public Map<Long, Product> getProducts() {
 		return products;
 	}
 	
-	public void setProducts(Map<String, Product> products) {
+	public void setProducts(Map<Long, Product> products) {
 		this.products = products;
 	}
 

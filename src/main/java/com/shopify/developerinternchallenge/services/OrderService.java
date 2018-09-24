@@ -26,7 +26,7 @@ public class OrderService {
 		return this.orderRepository.findAll();
 	}
 
-	public Order getOrderById(String orderId) {
+	public Order getOrderById(Long orderId) {
 		if (orderId != null) {
 			Optional<Order> order = this.orderRepository.findById(orderId);
 			if (order.isPresent()) {
@@ -36,11 +36,6 @@ public class OrderService {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param order
-	 * @return
-	 */
 	@Transactional
 	public Order addOrder(Order order) {
 		if (contains(order)) {
@@ -64,9 +59,9 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void deleteOrder(String orderId) {
+	public void deleteOrder(Long orderId) {
 		if (!contains(orderId)) {
-			throw new NotFoundException(orderId);
+			throw new NotFoundException(orderId.toString());
 		}
 		Order order = getOrderById(orderId);
 		for (LineItem lineItem : order.getLineItems()) {
@@ -86,7 +81,7 @@ public class OrderService {
 		return contains(order.getId());
 	}
 
-	public boolean contains(String orderId) {
+	public boolean contains(Long orderId) {
 		return getOrderById(orderId) != null;
 	}
 

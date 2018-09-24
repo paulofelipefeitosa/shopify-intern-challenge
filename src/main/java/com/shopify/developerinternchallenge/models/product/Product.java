@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 
@@ -24,10 +22,9 @@ public class Product {
 	public static final String ID_COLUMN_NAME = "productId";
 
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+	@GeneratedValue
 	@Column(name = ID_COLUMN_NAME)
-	String id;
+	Long id;
 
 	@NotBlank
 	String name;
@@ -59,7 +56,7 @@ public class Product {
 		this.price = price;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -99,7 +96,7 @@ public class Product {
 		this.lineItems.add(lineItem);
 	}
 	
-	public LineItem getLineItemWithId(String lineItemId) {
+	public LineItem getLineItemWithId(Long lineItemId) {
 		for (LineItem lineItem : this.lineItems) {
 			if (lineItem.getId() == lineItemId) {
 				return lineItem;
@@ -108,7 +105,7 @@ public class Product {
 		return null;
 	}
 
-	public void deleteLineItemWithId(String lineItemId) {
+	public void deleteLineItemWithId(Long lineItemId) {
 		LineItem lineItem = getLineItemWithId(lineItemId);
 		if (lineItem != null) {
 			this.lineItems.remove(lineItem);

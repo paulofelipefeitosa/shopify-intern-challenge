@@ -24,7 +24,7 @@ public class ProductService {
 		return this.productRepository.findAll();
 	}
 
-	public Product getProductById(String productId) {
+	public Product getProductById(Long productId) {
 		if (productId != null) {
 			Optional<Product> product = this.productRepository.findById(productId);
 			if (product.isPresent()) {
@@ -43,30 +43,30 @@ public class ProductService {
 		}
 		return this.productRepository.save(product);
 	}
-	
+
 	@Transactional
-	public Product addLineItem2Product(LineItem lineItem, String productId) {
+	public Product addLineItem2Product(LineItem lineItem, Long productId) {
 		Product product = getProductById(productId);
-		if(product == null) {
-			throw new NotFoundException(productId);
+		if (product == null) {
+			throw new NotFoundException(productId.toString());
 		}
 		product.addLineItem(lineItem);
 		return this.productRepository.saveAndFlush(product);
 	}
 
 	@Transactional
-	public void deleteProduct(String productId) {
+	public void deleteProduct(Long productId) {
 		if (!contains(productId)) {
-			throw new NotFoundException(productId);
+			throw new NotFoundException(productId.toString());
 		}
 		this.productRepository.delete(getProductById(productId));
 	}
-	
+
 	@Transactional
-	public Product deleteLineItemFromProduct(LineItem lineItem, String productId) {
+	public Product deleteLineItemFromProduct(LineItem lineItem, Long productId) {
 		Product product = getProductById(productId);
-		if(product == null) {
-			throw new NotFoundException(productId);
+		if (product == null) {
+			throw new NotFoundException(productId.toString());
 		}
 		product.deleteLineItemWithId(lineItem.getId());
 		return this.productRepository.saveAndFlush(product);
@@ -100,7 +100,7 @@ public class ProductService {
 		return contains(product.getId());
 	}
 
-	public boolean contains(String productId) {
+	public boolean contains(Long productId) {
 		return getProductById(productId) != null;
 	}
 }

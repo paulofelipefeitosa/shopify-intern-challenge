@@ -26,7 +26,7 @@ public class LineItemService {
 		return this.lineItemRepository.findAll();
 	}
 
-	public LineItem getLineItemById(String lineItemId) {
+	public LineItem getLineItemById(Long lineItemId) {
 		if(lineItemId != null) {
 			Optional<LineItem> lineItem = this.lineItemRepository.findById(lineItemId);
 			if(lineItem.isPresent()) {
@@ -61,9 +61,9 @@ public class LineItemService {
 	}
 
 	@Transactional
-	public void deleteLineItem(String lineItemId) {
+	public void deleteLineItem(Long lineItemId) {
 		if (!contains(lineItemId)) {
-			throw new NotFoundException(lineItemId);
+			throw new NotFoundException(lineItemId.toString());
 		}
 		LineItem lineItem = getLineItemById(lineItemId);
 		this.productService.deleteLineItemFromProduct(lineItem, lineItem.getProduct().getId());
@@ -88,7 +88,7 @@ public class LineItemService {
 		return contains(lineItem.getId());
 	}
 
-	public boolean contains(String lineItemId) {
+	public boolean contains(Long lineItemId) {
 		return getLineItemById(lineItemId) != null;
 	}
 }

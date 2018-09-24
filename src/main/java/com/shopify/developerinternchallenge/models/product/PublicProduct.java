@@ -1,7 +1,7 @@
 package com.shopify.developerinternchallenge.models.product;
 
 public class PublicProduct {
-	String id;
+	Long id;
 	String name;
 	String description;
 	Integer availableAmount;
@@ -15,7 +15,7 @@ public class PublicProduct {
 		this.price = product.getPrice();
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 

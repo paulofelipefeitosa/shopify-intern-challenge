@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.shopify.developerinternchallenge.models.order.Order;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, String>{
+public interface OrderRepository extends JpaRepository<Order, Long>{
 
 }

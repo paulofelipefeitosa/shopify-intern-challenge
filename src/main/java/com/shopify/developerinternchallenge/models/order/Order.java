@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 
 @Entity
@@ -24,10 +22,9 @@ public class Order {
 	public static final String TABLE_NAME = "orders_table";
 
 	@Id
+	@GeneratedValue
 	@Column(name = ID_COLUMN_NAME)
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	String id;
+	Long id;
 
 	@PositiveOrZero
 	Double value;
@@ -40,7 +37,7 @@ public class Order {
 		this.lineItems = new ArrayList<>();
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 	
@@ -49,7 +46,7 @@ public class Order {
 		calculateValue();
 	}
 
-	public LineItem getLineItemWithId(String lineItemId) {
+	public LineItem getLineItemWithId(Long lineItemId) {
 		for (LineItem lineItem : this.lineItems) {
 			if (lineItem.getId() == lineItemId) {
 				return lineItem;
@@ -58,7 +55,7 @@ public class Order {
 		return null;
 	}
 
-	public void deleteLineItemWithId(String lineItemId) {
+	public void deleteLineItemWithId(Long lineItemId) {
 		LineItem lineItem = getLineItemWithId(lineItemId);
 		if (lineItem != null) {
 			this.lineItems.remove(lineItem);

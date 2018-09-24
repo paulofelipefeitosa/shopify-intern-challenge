@@ -33,14 +33,14 @@ public class ProductController {
 
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}", method = RequestMethod.GET)
-	public @ResponseBody Product getProduct(@PathVariable String shopName, @PathVariable String productId) {
+	public @ResponseBody Product getProduct(@PathVariable String shopName, @PathVariable Long productId) {
 		Shop shop = this.shopController.getShop(shopName);
 		return getProductById(productId, shop);
 	}
 	
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}/lineItems", method = RequestMethod.GET)
-	public @ResponseBody List<LineItem> getProductLineItems(@PathVariable String shopName, @PathVariable String productId) {
+	public @ResponseBody List<LineItem> getProductLineItems(@PathVariable String shopName, @PathVariable Long productId) {
 		Shop shop = this.shopController.getShop(shopName);
 		return getProductById(productId, shop).getLineItems();
 	}
@@ -55,7 +55,7 @@ public class ProductController {
 
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}", method = RequestMethod.DELETE)
-	public @ResponseBody Boolean deleteShop(@PathVariable String shopName, @PathVariable String productId) {
+	public @ResponseBody Boolean deleteShop(@PathVariable String shopName, @PathVariable Long productId) {
 		Shop shop = this.shopController.getShop(shopName);
 		Product product = getProductById(productId, shop);
 		this.shopService.deleteShopProduct(product, shop);
@@ -64,7 +64,7 @@ public class ProductController {
 
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}/name/{name}", method = RequestMethod.PATCH)
-	public @ResponseBody PublicProduct editProductName(@PathVariable String shopName, @PathVariable String productId,
+	public @ResponseBody PublicProduct editProductName(@PathVariable String shopName, @PathVariable Long productId,
 			@PathVariable String name) {
 		Shop shop = this.shopController.getShop(shopName);
 		Product product = getProductById(productId, shop);
@@ -74,7 +74,7 @@ public class ProductController {
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}/description/{description}", method = RequestMethod.PATCH)
 	public @ResponseBody PublicProduct editProductDescription(@PathVariable String shopName,
-			@PathVariable String productId, @PathVariable String description) {
+			@PathVariable Long productId, @PathVariable String description) {
 		Shop shop = this.shopController.getShop(shopName);
 		Product product = getProductById(productId, shop);
 		return this.productService.editProductDescription(product, description).publicProduct();
@@ -83,7 +83,7 @@ public class ProductController {
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}/price/{price}", method = RequestMethod.PATCH)
 	public @ResponseBody PublicProduct editProductDescription(@PathVariable String shopName,
-			@PathVariable String productId, @PathVariable Double price) {
+			@PathVariable Long productId, @PathVariable Double price) {
 		Shop shop = this.shopController.getShop(shopName);
 		Product product = getProductById(productId, shop);
 		return this.productService.editProductPrice(product, price).publicProduct();
@@ -91,17 +91,17 @@ public class ProductController {
 
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}/addStock/{add2Stock}", method = RequestMethod.PATCH)
-	public @ResponseBody PublicProduct addProduct2Stock(@PathVariable String shopName, @PathVariable String productId,
+	public @ResponseBody PublicProduct addProduct2Stock(@PathVariable String shopName, @PathVariable Long productId,
 			@PathVariable Integer add2Stock) {
 		Shop shop = this.shopController.getShop(shopName);
 		Product product = getProductById(productId, shop);
 		return this.productService.addProduct2Stock(product, add2Stock).publicProduct();
 	}
 
-	private Product getProductById(String productId, Shop shop) {
+	private Product getProductById(Long productId, Shop shop) {
 		Product product = shop.getProductsById(productId);
 		if (product == null) {
-			throw new NotFoundException(productId);
+			throw new NotFoundException(productId.toString());
 		}
 		return product;
 	}

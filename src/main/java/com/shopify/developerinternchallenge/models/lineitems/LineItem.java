@@ -8,37 +8,34 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import com.shopify.developerinternchallenge.models.product.Product;
 
 @Entity
 public class LineItem {
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	String id;
-	
+	@GeneratedValue
+	Long id;
+
 	@NotNull
 	@ManyToOne
 	Product product;
-	
+
 	@Positive
 	Integer amount;
-	
+
 	@PositiveOrZero
 	Double value;
-	
+
 	public LineItem() {
 	}
-	
+
 	public LineItem(Product product, Integer amount) {
 		this();
 		this.product = product;
 		this.amount = amount;
 		calculateValue();
 	}
-	
+
 	private void calculateValue() {
 		this.value = this.product.getPrice() * this.amount;
 	}
@@ -47,7 +44,7 @@ public class LineItem {
 		return value;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
