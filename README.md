@@ -18,5 +18,5 @@ Rest API [documentation](https://web.postman.co/collections/4982417-ea4dde06-afc
 Run the following to start the container:
 
 ```
-docker run -d -p 8080:8080 pfeitosa/shopify-intern-challenge-2019
+sudo docker run -tdi -p 8080:8080 pfeitosa/shopify-intern-challenge-2019
 ```
