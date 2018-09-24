@@ -27,4 +27,4 @@ WORKDIR /root/shopify-intern-challenge
 RUN \
   mvn install -Dmaven.test.skip=true
 
-CMD java -jar developer-intern-challenge-0.0.1-SNAPSHOT.jar && tail -f /dev/null
+CMD java -jar target/developer-intern-challenge-0.0.1-SNAPSHOT.jar && tail -f /dev/null
