@@ -25,6 +25,6 @@ RUN \
 WORKDIR /root/shopify-intern-challenge
 
 RUN \
-  mvn dependency:sources
+  mvn install -Dmaven.test.skip=true
 
-CMD ./mvnw spring-boot:run -X && tail -f /dev/null
+CMD java -jar developer-intern-challenge-0.0.1-SNAPSHOT.jar && tail -f /dev/null
