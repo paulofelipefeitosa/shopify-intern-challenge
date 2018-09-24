@@ -1,13 +1,13 @@
 # Shopify Developer Intern Challenge - Winter 2019
 Demo project for Shopify Developer Intern [Challenge](https://docs.google.com/document/d/1YYDRf_CgQRryf5lZdkZ2o3Hm3erFSaISL1L1s8kLqsI/edit) - Winter 2019.
 
-## High level architecture
-![High level architecture](docs/images/shopify-challenge.jpg)
+## High Level Design
+![High Level Design](docs/images/shopify-challenge.jpg)
 
 ## Technologies
 * Java
 * Spring Boot
-* Hibernate + H2
+* Hibernate + H2 [in memory database]
 
 ## Rest API
 
