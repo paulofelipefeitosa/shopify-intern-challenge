@@ -54,7 +54,7 @@ public class OrderService {
 	public LineItem addLineItem2Order(LineItem lineItem, Order order) {
 		lineItem = this.lineItemService.addLineItem(lineItem);
 		order.addLineItem(lineItem);
-		this.orderRepository.saveAndFlush(order);
+		order = this.orderRepository.saveAndFlush(order);
 		return lineItem;
 	}
 

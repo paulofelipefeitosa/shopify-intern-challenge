@@ -50,6 +50,7 @@ public class LineItemService {
 		}
 		Product product = this.productService.getProductById(lineItem.getProduct().getId());
 		if (product.getAvailableAmount() >= lineItem.getAmount()) {
+			lineItem.setProduct(product);
 			lineItem = this.lineItemRepository.save(lineItem);
 			this.productService.addLineItem2Product(lineItem, product.getId());
 			return lineItem;
@@ -66,8 +67,8 @@ public class LineItemService {
 			throw new NotFoundException(lineItemId.toString());
 		}
 		LineItem lineItem = getLineItemById(lineItemId);
-		this.productService.deleteLineItemFromProduct(lineItem, lineItem.getProduct().getId());
 		this.lineItemRepository.delete(getLineItemById(lineItemId));
+		this.productService.deleteLineItemFromProduct(lineItem, lineItem.getProduct().getId());
 	}
 
 	@Transactional

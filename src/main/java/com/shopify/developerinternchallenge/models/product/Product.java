@@ -41,7 +41,7 @@ public class Product {
 	
 	@JsonIgnore
 	@NotNull
-	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER)
 	List<LineItem> lineItems;
 	
 	public Product() {

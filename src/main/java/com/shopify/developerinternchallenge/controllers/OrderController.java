@@ -26,7 +26,7 @@ public class OrderController {
 	@Autowired
 	ShopService shopService;
 
-	@RequestMapping(value = "/{shopName}" + OrderController.ENDPOINT, method = RequestMethod.GET)
+	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + OrderController.ENDPOINT, method = RequestMethod.GET)
 	public @ResponseBody Collection<Order> getShopOrders(@PathVariable String shopName) {
 		Shop shop = this.shopController.getShop(shopName);
 		return shop.getOrders().values();

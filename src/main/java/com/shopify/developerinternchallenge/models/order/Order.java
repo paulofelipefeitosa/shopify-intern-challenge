@@ -75,7 +75,9 @@ public class Order {
 	private void calculateValue() {
 		this.value = 0.0;
 		for(LineItem lineItem : this.lineItems) {
-			this.value += lineItem.getValue();
+			if(lineItem.getValue() != null) {
+				this.value += lineItem.getValue();
+			}
 		}
 	}
 

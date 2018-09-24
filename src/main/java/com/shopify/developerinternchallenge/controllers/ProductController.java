@@ -31,7 +31,7 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 
-	@RequestMapping(value = "/{shopName}" + ProductController.ENDPOINT, method = RequestMethod.GET)
+	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT, method = RequestMethod.GET)
 	public @ResponseBody List<PublicProduct> getShopProducts(@PathVariable String shopName) {
 		Shop shop = this.shopController.getShop(shopName); 
         //@formatter:off

@@ -37,7 +37,9 @@ public class LineItem {
 	}
 
 	private void calculateValue() {
-		this.value = this.product.getPrice() * this.amount;
+		if (this.product != null && this.product.getPrice() != null) {
+			this.value = this.product.getPrice() * this.amount;
+		}
 	}
 
 	public Double getValue() {
@@ -50,6 +52,11 @@ public class LineItem {
 
 	public Product getProduct() {
 		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+		calculateValue();
 	}
 
 	public Integer getAmount() {
