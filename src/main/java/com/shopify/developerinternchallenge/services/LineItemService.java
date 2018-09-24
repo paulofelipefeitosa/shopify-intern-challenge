@@ -1,7 +1,6 @@
 package com.shopify.developerinternchallenge.services;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
 import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailableException;
+import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.product.Product;
 import com.shopify.developerinternchallenge.repositories.LineItemRepository;
@@ -61,7 +61,7 @@ public class LineItemService {
 	@Transactional
 	public void deleteLineItem(String lineItemId) {
 		if (!contains(lineItemId)) {
-			throw new NoSuchElementException(lineItemId);
+			throw new NotFoundException(lineItemId);
 		}
 		this.lineItemRepository.delete(getLineItemById(lineItemId));
 	}

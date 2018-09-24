@@ -2,7 +2,6 @@ package com.shopify.developerinternchallenge.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
 import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailableException;
+import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.order.Order;
 import com.shopify.developerinternchallenge.repositories.OrderRepository;
@@ -73,7 +73,7 @@ public class OrderService {
 	@Transactional
 	public void deleteOrder(String orderId) {
 		if (!contains(orderId)) {
-			throw new NoSuchElementException(orderId);
+			throw new NotFoundException(orderId);
 		}
 		Order order = getOrderById(orderId);
 		for (LineItem lineItem : order.getLineItems()) {

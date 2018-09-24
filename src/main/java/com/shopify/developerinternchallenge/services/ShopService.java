@@ -89,7 +89,7 @@ public class ShopService {
 	}
 	
 	@Transactional
-	public Shop deleteStockProduct(Product product, Shop shop) {
+	public Shop deleteShopProduct(Product product, Shop shop) {
 		this.productService.deleteProduct(product.getId());
 		shop.deleteProduct(product);
 		return this.shopRepository.saveAndFlush(shop);
