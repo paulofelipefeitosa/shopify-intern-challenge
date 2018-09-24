@@ -23,7 +23,7 @@ public class DemoDataLoader implements ApplicationRunner {
 		// System.out.println(shop);
 
 		Product product = new Product("FirstProduct", "This is the first product of the Shop", 10, 1.5);
-		product = this.shopService.addProduct2Shop(product.getPublicProduct(), shop);
+		product = this.shopService.addProduct2Shop(product.publicProduct(), shop);
 		// System.out.println(product);
 		// System.out.println(this.shopService.getShopByName(shop.getName()));
 

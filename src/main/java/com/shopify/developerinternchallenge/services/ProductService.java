@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
 import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
+import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.product.Product;
 import com.shopify.developerinternchallenge.models.product.PublicProduct;
 import com.shopify.developerinternchallenge.repositories.ProductRepository;
@@ -42,6 +43,16 @@ public class ProductService {
 		}
 		return this.productRepository.save(product);
 	}
+	
+	@Transactional
+	public Product addLineItem2Product(LineItem lineItem, String productId) {
+		Product product = getProductById(productId);
+		if(product == null) {
+			throw new NotFoundException(productId);
+		}
+		product.addLineItem(lineItem);
+		return this.productRepository.saveAndFlush(product);
+	}
 
 	@Transactional
 	public void deleteProduct(String productId) {
@@ -49,6 +60,16 @@ public class ProductService {
 			throw new NotFoundException(productId);
 		}
 		this.productRepository.delete(getProductById(productId));
+	}
+	
+	@Transactional
+	public Product deleteLineItemFromProduct(LineItem lineItem, String productId) {
+		Product product = getProductById(productId);
+		if(product == null) {
+			throw new NotFoundException(productId);
+		}
+		product.deleteLineItemWithId(lineItem.getId());
+		return this.productRepository.saveAndFlush(product);
 	}
 
 	@Transactional

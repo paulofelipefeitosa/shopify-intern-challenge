@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopify.developerinternchallenge.models.exceptions.ElementAlreadyExistException;
-import com.shopify.developerinternchallenge.models.exceptions.InsufficientProductsAvailableException;
 import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.order.Order;
@@ -46,12 +45,6 @@ public class OrderService {
 	public Order addOrder(Order order) {
 		if (contains(order)) {
 			throw new ElementAlreadyExistException(order.toString());
-		}
-		for (LineItem lineItem : order.getLineItems()) {
-			if (!this.lineItemService.thereIsEnoughProductsAvailable(lineItem)) {
-				throw new InsufficientProductsAvailableException("Cannot process " + order.toString()
-						+ " there are not enough products available for " + lineItem.toString());
-			}
 		}
 		List<LineItem> newLineItems = new ArrayList<>();
 		for (LineItem lineItem : order.getLineItems()) {
@@ -96,4 +89,5 @@ public class OrderService {
 	public boolean contains(String orderId) {
 		return getOrderById(orderId) != null;
 	}
+
 }

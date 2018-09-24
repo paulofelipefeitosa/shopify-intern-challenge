@@ -47,7 +47,7 @@ public class ShopController {
 		Shop shop = getShopByName(shopName);
         //@formatter:off
         return shop.getProducts().values().stream()
-        		.map(e -> e.getPublicProduct())
+        		.map(e -> e.publicProduct())
         		.collect(Collectors.toList());
         //@formatter:on
     }

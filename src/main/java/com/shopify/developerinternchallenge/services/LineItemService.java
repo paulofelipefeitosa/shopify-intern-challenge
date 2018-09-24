@@ -48,10 +48,12 @@ public class LineItemService {
 		if (contains(lineItem)) {
 			throw new ElementAlreadyExistException(lineItem.toString());
 		}
-		if (thereIsEnoughProductsAvailable(lineItem)) {
-			return this.lineItemRepository.save(lineItem);
+		Product product = this.productService.getProductById(lineItem.getProduct().getId());
+		if (product.getAvailableAmount() >= lineItem.getAmount()) {
+			lineItem = this.lineItemRepository.save(lineItem);
+			this.productService.addLineItem2Product(lineItem, product.getId());
+			return lineItem;
 		} else {
-			Product product = this.productService.getProductById(lineItem.getProduct().getId());
 			throw new InsufficientProductsAvailableException(
 					"Product [" + product.getId() + "] has just [" + product.getAvailableAmount()
 							+ "] and you are trying to get [" + lineItem.getAmount() + "] products");
@@ -63,6 +65,8 @@ public class LineItemService {
 		if (!contains(lineItemId)) {
 			throw new NotFoundException(lineItemId);
 		}
+		LineItem lineItem = getLineItemById(lineItemId);
+		this.productService.deleteLineItemFromProduct(lineItem, lineItem.getProduct().getId());
 		this.lineItemRepository.delete(getLineItemById(lineItemId));
 	}
 
@@ -78,11 +82,6 @@ public class LineItemService {
 			throw new InsufficientProductsAvailableException("Product [" + product.getId() + "] has just ["
 					+ product.getAvailableAmount() + "] and you are trying to get [" + newAmount + "] products");
 		}
-	}
-
-	public boolean thereIsEnoughProductsAvailable(LineItem lineItem) {
-		Product product = this.productService.getProductById(lineItem.getProduct().getId());
-		return product.getAvailableAmount() >= lineItem.getAmount();
 	}
 
 	public boolean contains(LineItem lineItem) {

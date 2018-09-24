@@ -3,7 +3,6 @@ package com.shopify.developerinternchallenge.models.product;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +16,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 
 @Entity
@@ -42,8 +42,9 @@ public class Product {
 	@PositiveOrZero
 	Double price;
 	
+	@JsonIgnore
 	@NotNull
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	List<LineItem> lineItems;
 	
 	public Product() {
@@ -94,7 +95,27 @@ public class Product {
 		return lineItems;
 	}
 	
-	public PublicProduct getPublicProduct() {
+	public void addLineItem(LineItem lineItem) {
+		this.lineItems.add(lineItem);
+	}
+	
+	public LineItem getLineItemWithId(String lineItemId) {
+		for (LineItem lineItem : this.lineItems) {
+			if (lineItem.getId() == lineItemId) {
+				return lineItem;
+			}
+		}
+		return null;
+	}
+
+	public void deleteLineItemWithId(String lineItemId) {
+		LineItem lineItem = getLineItemWithId(lineItemId);
+		if (lineItem != null) {
+			this.lineItems.remove(lineItem);
+		}
+	}
+	
+	public PublicProduct publicProduct() {
 		return new PublicProduct(this);
 	}
 
