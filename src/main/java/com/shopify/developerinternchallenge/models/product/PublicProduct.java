@@ -7,7 +7,11 @@ public class PublicProduct {
 	Integer availableAmount;
 	Double price;
 	
+	public PublicProduct() {
+	}
+	
 	public PublicProduct(Product product) {
+		this();
 		this.id = product.getId();
 		this.name = product.getName();
 		this.description = product.getDescription();
@@ -33,6 +37,26 @@ public class PublicProduct {
 
 	public Double getPrice() {
 		return price;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setAvailableAmount(Integer availableAmount) {
+		this.availableAmount = availableAmount;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 	
 }

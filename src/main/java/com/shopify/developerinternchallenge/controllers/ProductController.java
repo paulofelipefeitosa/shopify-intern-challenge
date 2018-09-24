@@ -1,6 +1,7 @@
 package com.shopify.developerinternchallenge.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +32,16 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 
+	@RequestMapping(value = "/{shopName}" + ProductController.ENDPOINT, method = RequestMethod.GET)
+	public @ResponseBody List<PublicProduct> getShopProducts(@PathVariable String shopName) {
+		Shop shop = this.shopController.getShop(shopName); 
+        //@formatter:off
+        return shop.getProducts().values().stream()
+        		.map(e -> e.publicProduct())
+        		.collect(Collectors.toList());
+        //@formatter:on
+    }
+	
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
 			+ "/{productId}", method = RequestMethod.GET)
 	public @ResponseBody Product getProduct(@PathVariable String shopName, @PathVariable Long productId) {

@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shopify.developerinternchallenge.models.order.Order;
 import com.shopify.developerinternchallenge.models.product.Product;
 
@@ -24,6 +25,7 @@ public class Shop {
 	@MapKeyColumn(name = Product.ID_COLUMN_NAME)
 	Map<Long, Product> products;
 
+	@JsonIgnore
 	@NotNull
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	@MapKeyColumn(name = Order.ID_COLUMN_NAME)
@@ -39,6 +41,7 @@ public class Shop {
 		this.name = name;
 	}
 
+	@JsonIgnore
 	public PublicShop getPublicShop() {
 		return new PublicShop(this);
 	}

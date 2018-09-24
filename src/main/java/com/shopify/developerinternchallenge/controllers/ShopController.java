@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
-import com.shopify.developerinternchallenge.models.product.PublicProduct;
 import com.shopify.developerinternchallenge.models.shop.PublicShop;
 import com.shopify.developerinternchallenge.models.shop.Shop;
 import com.shopify.developerinternchallenge.services.ShopService;
@@ -42,24 +41,14 @@ public class ShopController {
         return shop;
     }
 
-	@RequestMapping(value = "/{shopName}" + ProductController.ENDPOINT, method = RequestMethod.GET)
-	public @ResponseBody List<PublicProduct> getShopProducts(@PathVariable String shopName) {
-		Shop shop = getShopByName(shopName);
-        //@formatter:off
-        return shop.getProducts().values().stream()
-        		.map(e -> e.publicProduct())
-        		.collect(Collectors.toList());
-        //@formatter:on
-    }
-	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody PublicShop addShop(@RequestBody PublicShop shop) {
         return this.shopService.addShop(shop).getPublicShop();
     }
 	
 	@RequestMapping(value = "/{shopName}", method = RequestMethod.DELETE)
-	public @ResponseBody Boolean deleteShop(@PathVariable String shopId) {
-        this.shopService.deleteShop(shopId);
+	public @ResponseBody Boolean deleteShop(@PathVariable String shopName) {
+        this.shopService.deleteShop(shopName);
         return true;
     }
 	
