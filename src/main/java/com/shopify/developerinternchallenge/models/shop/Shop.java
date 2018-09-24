@@ -57,6 +57,10 @@ public class Shop {
 	public void deleteOrder(Long orderId) {
 		this.orders.remove(orderId);
 	}
+	
+	public Order getOrderById(Long orderId) {
+		return this.orders.get(orderId);
+	}
 
 	public Map<Long, Order> getOrders() {
 		return orders;

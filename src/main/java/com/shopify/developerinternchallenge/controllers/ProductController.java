@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopify.developerinternchallenge.models.exceptions.NotFoundException;
-import com.shopify.developerinternchallenge.models.lineitems.LineItem;
 import com.shopify.developerinternchallenge.models.product.Product;
 import com.shopify.developerinternchallenge.models.product.PublicProduct;
 import com.shopify.developerinternchallenge.models.shop.Shop;
@@ -49,13 +48,6 @@ public class ProductController {
 		return getProductById(productId, shop);
 	}
 	
-	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}" + ProductController.ENDPOINT
-			+ "/{productId}/lineItems", method = RequestMethod.GET)
-	public @ResponseBody List<LineItem> getProductLineItems(@PathVariable String shopName, @PathVariable Long productId) {
-		Shop shop = this.shopController.getShop(shopName);
-		return getProductById(productId, shop).getLineItems();
-	}
-
 	@RequestMapping(value = ShopController.ENDPOINT + "/{shopName}"
 			+ ProductController.ENDPOINT, method = RequestMethod.POST)
 	public @ResponseBody PublicProduct addShop(@PathVariable String shopName,
